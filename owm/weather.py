@@ -1,19 +1,23 @@
 import json
 import requests
 from . import lib
+from . import measurement
 
 h = lib.Helpers()
+d = measurement.DB()
 
 class Temp:
 
+    def __init__( self ):
+        self.baseurl =  'http://api.openweathermap.org/data/2.5/weather?'
+
     def current( self, typeplase, owm_key, *plase ):
 
-        BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
-
         if typeplase == 'curent':
-            ep_current_weather = BASE_URL + h.mylocation() + '&appid=' + owm_key
+            location = h.mylocation()
         elif typeplase == 'city':
-            ep_current_weather = BASE_URL + 'q=' + plase[0] + '&appid=' + owm_key
+            location = plase[0]
+        ep_current_weather = self.baseurl + 'q=' + location + '&appid=' + owm_key
 
         try:
             # Gest data
@@ -29,4 +33,5 @@ class Temp:
             }
 
         finally:
+            d.set_data( current, location )
             return current

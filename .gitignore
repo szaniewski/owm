@@ -1,2 +1,3 @@
 test.py
 owm/__pycache__/
+owm/db/measurement.json

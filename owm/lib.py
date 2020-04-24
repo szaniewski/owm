@@ -7,12 +7,9 @@ class Helpers():
         return round( int( k ) - 273.15 , 2)
 
     def mylocation( self ):
-
         g = geocoder.ip('me')
-        latlng = g.latlng
-        latlng_url = 'lat=' + str(latlng[0]) + '&lon=' + str(latlng[1])
 
-        return latlng_url
+        return g.city
 
     def date( self, difference ):
 
