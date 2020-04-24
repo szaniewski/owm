@@ -20,3 +20,8 @@ class Helpers():
         date = { 'start': start, 'end': end }
 
         return date
+
+    def city_dic( self ):
+        #TO DO connect to Goole API for city list
+        citys = ('Warszawa','Poznań','Wrocała','Kraków', 'Katowice')
+        return citys

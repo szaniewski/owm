@@ -68,9 +68,12 @@ class Temp:
             data = self.history_data
             return data
 
-    def show_data_chart( self, typechart ):
+    def show_data_chart( self ):
+        citys = h.city_dic()
 
-        if self.check_data() == True:
+        for c in citys:
+            print(self.get_owm_data( 'city', key, c ))
+        # if self.check_data() == True:
 
-            if typechart == 'all_city_day':
-                ch.all_city_day ( self.history_data )
+        #     if typechart == 'all_city_day':
+        #         ch.all_city_day ( self.history_data )
