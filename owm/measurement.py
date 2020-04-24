@@ -7,14 +7,14 @@ class DB:
 
         self.url = 'owm/db/measurement.json'
         self.db = TinyDB( self.url )
+        self.currenthistory = self.db.table('currenthistory')
 
-    def set_data( self, current, location, typeplase ):
+    def save_current_data( self, current, location, typeplase ):
 
         current['timestamp'] = datetime.datetime.now().timestamp()
         current['location'] = location
         current['typeplase'] = typeplase
-        #Set in local DB
-        self.db.insert( current )
+        self.currenthistory.insert( current )
 
     def get_data( self ):
 
