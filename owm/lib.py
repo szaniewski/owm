@@ -3,6 +3,13 @@ import geocoder
 
 class Helpers():
 
+    def check_data( self ):
+        #Validatr file data
+        if not self.history_data:
+            return 'No data ;( - si so sad'
+        else:
+            return True
+
     def kelvin_to_celsius( self,  k ):
         return round( int( k ) - 273.15 , 2)
 
@@ -21,7 +28,7 @@ class Helpers():
 
         return date
 
-    def city_dic( self ):
+    def cities_dic( self ):
         #TO DO connect to Goole API for city list
-        citys = ('Warszawa','Poznań','Wrocała','Kraków', 'Katowice')
-        return citys
+        data = ('Warszawa','Poznań','Kraków', 'Katowice')
+        return data

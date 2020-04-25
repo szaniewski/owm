@@ -9,33 +9,27 @@ h = lib.Helpers()
 d = measurement.DB()
 ch = charts.CHARTS()
 
-class Temp:
+class Temp():
 
-    def __init__( self ):
+    def __init__( self, apikey ):
+        self.apikey = apikey
         self.baseurl =  'http://api.openweathermap.org/data/2.5/weather?'
         self.h = lib.Helpers()
         self.d = measurement.DB()
         self.history_data = self.d.get_data()
 
-    def check_data( self ):
-        #Validatr file data
-        if not self.history_data:
-            return 'No data ;( - si so sad'
-        else:
-            return True
-
-    def get_owm_data( self, typeplase, owm_key, *plase ):
+    def get_owm_data( self, typeplase, *plase ):
         """
-            Conet to Open Weather Map
-            Return JSON file from API
-            @typeplase - You can use you location from geoapi if you set 'curent'
+        Connect to Open Weather Map
+        Return JSON file from API
+        @typeplase - You can use you location from geoapi if you set 'curent'
         """
         if typeplase == 'curent':
-            location = self.h.mylocation()
+            location = str(self.h.mylocation())
         elif typeplase == 'city':
-            location = plase[0]
-        # Create API endpoint
-        ep_current_weather = self.baseurl + 'q=' + location[0] + '&appid=' + owm_key
+            location = str(plase[0])
+        #Create API endpoint
+        ep_current_weather = self.baseurl + 'q=' + location + '&appid=' + self.apikey
 
         try:
             # Gest data
@@ -44,12 +38,12 @@ class Temp:
         finally:
             return data
 
-    def get_current( self, typeplase, owm_key, *plase  ):
+    def get_current( self, typeplase, *plase  ):
         """
-            Retrirn current Temp, Feel Temp and Description
-            Also save data in local DB
+        Return Current Temp, Feel Temp and Description
+        Also save data in local DB
         """
-        weather_info = self.get_owm_data( typeplase, owm_key, plase )
+        weather_info = self.get_owm_data( typeplase, plase )
         location = weather_info['name']
         # # VARTIBLE --- Set data
         current = {
@@ -59,21 +53,25 @@ class Temp:
             'temp_c' : h.kelvin_to_celsius( weather_info['main']['temp'] ),
         }
 
-        self.d.save_current_data( current, location, typeplase )
+        self.d.current_data( current, location, typeplase )
         return current
 
     def get_local_data( self ):
 
-        if self.check_data() == True:
+        if self.h.check_data() == True:
             data = self.history_data
-            return data
+        else:
+            data = 'Brak danych'
+
+        return data
 
     def show_data_chart( self ):
-        citys = h.city_dic()
+        cities = h.cities_dic()
+        temp = []
 
-        for c in citys:
-            print(self.get_owm_data( 'city', key, c ))
-        # if self.check_data() == True:
+        for citie in cities:
+            data = self.get_owm_data( 'city', citie )
+            self.d.cities_data( data )
+            temp.append( h.kelvin_to_celsius( data['main']['temp'] ) )
 
-        #     if typechart == 'all_city_day':
-        #         ch.all_city_day ( self.history_data )
+        ch.cities_chart( temp, cities)

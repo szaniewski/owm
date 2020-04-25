@@ -1,21 +1,16 @@
 import matplotlib.pyplot as plt
 
 class CHARTS:
+    """
+    Drawe chart's
+    """
 
-    def __init__( self ):
-        self.temp_c =[]
-        self.location = []
+    def cities_chart( self, temp, location ):
 
-    def all_city_day( self, data ):
+        plt.bar( location,  temp )
+        plt.xlabel('Cities')
+        plt.ylabel('Temperature')
 
-        for d in data:
-            self.temp_c.append( d['temp_c'] )
-            self.location.append( d['location'] )
-
-        plt.bar( self.location, self.temp_c )
-        plt.xlabel('Miasta')
-        plt.ylabel('Temperatury')
-
-        plt.title('Yours wheter grah')
+        plt.title('Yours graph')
 
         plt.show()
