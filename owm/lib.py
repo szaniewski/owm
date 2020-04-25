@@ -3,9 +3,9 @@ import geocoder
 
 class Helpers():
 
-    def check_data( self ):
+    def check_data( self, data ):
         #Validatr file data
-        if not self.history_data:
+        if not data:
             return 'No data ;( - si so sad'
         else:
             return True

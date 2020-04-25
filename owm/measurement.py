@@ -1,5 +1,5 @@
 from tinydb import TinyDB, Query
-import datetime;
+import datetime
 
 class DB:
     """

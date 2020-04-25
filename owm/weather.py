@@ -4,18 +4,17 @@ import requests
 from . import lib
 from . import measurement
 from . import charts
-
-h = lib.Helpers()
-d = measurement.DB()
-ch = charts.CHARTS()
+from . import everyday
 
 class Temp():
 
     def __init__( self, apikey ):
         self.apikey = apikey
         self.baseurl =  'http://api.openweathermap.org/data/2.5/weather?'
+        self.ch = charts.CHARTS()
         self.h = lib.Helpers()
         self.d = measurement.DB()
+        self.dayli = everyday.dayli()
         self.history_data = self.d.get_data()
 
     def get_owm_data( self, typeplase, *plase ):
@@ -41,19 +40,16 @@ class Temp():
     def get_current( self, typeplase, *plase  ):
         """
         Return Current Temp, Feel Temp and Description
-        Also save data in local DB
         """
         weather_info = self.get_owm_data( typeplase, plase )
-        location = weather_info['name']
         # # VARTIBLE --- Set data
         current = {
             'weather_main' : weather_info['main'],
             'weather_description' : weather_info['weather'][0]['description'],
-            'feel_c' : h.kelvin_to_celsius( weather_info['main']['feels_like'] ),
-            'temp_c' : h.kelvin_to_celsius( weather_info['main']['temp'] ),
+            'feel_c' : self.h.kelvin_to_celsius( weather_info['main']['feels_like'] ),
+            'temp_c' : self.h.kelvin_to_celsius( weather_info['main']['temp'] ),
         }
 
-        self.d.current_data( current, location, typeplase )
         return current
 
     def get_local_data( self ):
@@ -66,12 +62,16 @@ class Temp():
         return data
 
     def show_data_chart( self ):
-        cities = h.cities_dic()
+        cities =  self.h.cities_dic()
         temp = []
 
         for citie in cities:
             data = self.get_owm_data( 'city', citie )
             self.d.cities_data( data )
-            temp.append( h.kelvin_to_celsius( data['main']['temp'] ) )
+            temp.append(  self.h.kelvin_to_celsius( data['main']['temp'] ) )
 
-        ch.cities_chart( temp, cities)
+        self.ch.cities_chart( temp, cities )
+
+    def save_data( self ):
+        data = self.get_current('curent')
+        self.dayli.curent( data )

@@ -31,6 +31,6 @@ print( t.get_local_data() )
 {"_default": {"1": {"weather_main": "Clouds", "weather_description": "overcast clouds", "feel_c": 12.85, "temp_c": 18.85, "timestamp": 1587722085.811539, "location": "Mokot\u00f3w", "typeplase": "curent"}}}
 
 t.show_data_chart()
-![Weather Graph](http://roch.lh.pl/graph.png)
+[Weather Graph](http://roch.lh.pl/graph.png)
 
 ```
