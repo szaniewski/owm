@@ -21,9 +21,9 @@ class Temp():
         """
         Connect to Open Weather Map
         Return JSON file from API
-        @typeplase - You can use you location from geoapi if you set 'curent'
+        @typeplase - You can use you location from geoapi if you set 'current'
         """
-        if typeplase == 'curent':
+        if typeplase == 'current':
             location = str(self.h.mylocation())
         elif typeplase == 'city':
             location = str(plase[0])
@@ -73,5 +73,5 @@ class Temp():
         self.ch.cities_chart( temp, cities )
 
     def save_data( self ):
-        data = self.get_current('curent')
-        self.dayli.curent( data )
+        data = self.get_current('current')
+        self.dayli.current( data )

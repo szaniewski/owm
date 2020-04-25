@@ -3,6 +3,6 @@ from threading import Timer
 
 class dayli:
 
-    def curent( self, data ):
+    def current( self, data ):
 
 
