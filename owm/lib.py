@@ -32,3 +32,4 @@ class Helpers():
         #TO DO connect to Goole API for city list
         data = ('Warszawa','Poznań','Kraków', 'Katowice')
         return data
+
