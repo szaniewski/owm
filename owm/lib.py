@@ -3,13 +3,6 @@ import geocoder
 
 class Helpers():
 
-    def check_data( self, data ):
-        #Validatr file data
-        if not data:
-            return 'No data ;( - si so sad'
-        else:
-            return True
-
     def kelvin_to_celsius( self,  k ):
         return round( int( k ) - 273.15 , 2)
 

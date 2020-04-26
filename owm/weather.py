@@ -4,8 +4,9 @@ import requests
 from . import lib
 from . import measurement
 from . import charts
-#from . import everyday
+#from . import saves
 from . import owmconect
+from . import processingdata
 
 class Temp():
 
@@ -13,28 +14,13 @@ class Temp():
         self.owm = owmconect.OWM( apikey )
         self.ch = charts.CHARTS()
         self.h = lib.Helpers()
-        self.d = measurement.DB()
-        #self.dayli = everyday.dayli()
-        self.alldata = self.d.get_data()
+        self.db = measurement.DB()
+       # self.autosave = saves.INTEVAL()
+        self.alldata = self.db.get_data()
+        self.processing = processingdata.DATAS( apikey )
 
     def get_current( self, typeplase, *plase  ):
-        """
-        Return Current Temp, Feel Temp and Description
-        """
-        if typeplase == 'current':
-            location = str( self.h.mylocation() )
-        elif typeplase == 'city':
-            location = str( plase[0] )
-
-        weather_info = self.owm.get_data( location )
-        # # VARTIBLE --- Set data
-        data = {
-            'weather_main' : weather_info['main'],
-            'weather_description' : weather_info['weather'][0]['description'],
-            'feel_c' : self.h.kelvin_to_celsius( weather_info['main']['feels_like'] ),
-            'temp_c' : self.h.kelvin_to_celsius( weather_info['main']['temp'] ),
-        }
-
+        data = self.processing.current( typeplase, plase )
         return data
 
     def get_local_data( self ):
@@ -51,11 +37,10 @@ class Temp():
 
         for citie in cities:
             data = self.owm.get_data( citie )
-            self.d.cities_data( data )
+            self.db.cities_data( data )
             temp.append(  self.h.kelvin_to_celsius( data['main']['temp'] ) )
 
         self.ch.cities_chart( temp, cities )
 
-    def save_data( self ):
-        data = self.get_current('current')
-        self.dayli.current( data )
+    # def save_data( self ):
+    #     return self.autosave.dayli()
