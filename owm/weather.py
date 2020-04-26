@@ -2,22 +2,23 @@ import json
 import requests
 
 from . import lib
-from . import measurement
 from . import charts
-#from . import saves
+from . import autosave
 from . import owmconect
 from . import processingdata
+from . import measurement
 
 class Temp():
 
     def __init__( self, apikey ):
+        self.db = measurement.DB()
         self.owm = owmconect.OWM( apikey )
         self.ch = charts.CHARTS()
         self.h = lib.Helpers()
-        self.db = measurement.DB()
-       # self.autosave = saves.INTEVAL()
+        self.auto = autosave.INTEVAL( apikey )
         self.alldata = self.db.get_data()
         self.processing = processingdata.DATAS( apikey )
+
 
     def get_current( self, typeplase, *plase  ):
         data = self.processing.current( typeplase, plase )
@@ -42,5 +43,5 @@ class Temp():
 
         self.ch.cities_chart( temp, cities )
 
-    # def save_data( self ):
-    #     return self.autosave.dayli()
+    def nomanual( self ):
+        return self.auto.dayli()
